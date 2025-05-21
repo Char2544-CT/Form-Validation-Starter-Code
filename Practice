@@ -1,0 +1,90 @@
+//Page reloads on submit error
+
+import './Home.css';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+//import { useMemo, useCallback } from 'react';
+
+const Home = () => {
+
+  //Yup
+  const validationSchema = Yup.object({
+    name: Yup.string().required('Name is required'),
+    email: Yup.string().email('Invalid email format').required('Email is required'),
+    option: Yup.string().required('Option is required'),
+  });
+
+  //Formik
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      email: '',
+      option: '',
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      console.log(values);
+    },
+    });
+
+    //jsx
+  return (
+    <form className='form-container'>
+      <label htmlFor='name'>Name:</label>
+      <input className='input' type='text' name='name' id='name' 
+      
+      value={formik.values.name} 
+      onChange={formik.handleChange} 
+      onBlur={formik.handleBlur}
+      
+      />
+      
+      {
+        formik.touched.name && formik.errors.name && (
+          <div className='error'>{formik.errors.name}</div>
+        )
+      }
+
+      <label htmlFor='email'>Email:</label>
+      <input className='input' type='email' name='email' id='email' 
+      
+      value={formik.values.email} 
+      onChange={formik.handleChange} 
+      onBlur={formik.handleBlur}
+      
+      />
+      
+        {
+        formik.touched.email && formik.errors.email && (
+          <div className='error'>{formik.errors.email}</div>
+          )
+        }
+      
+      <label htmlFor='option'>Options:</label>
+        <select className='input' name='option' id='option'
+          value={formik.values.option}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        >
+          <option value=''>Select an option</option>
+          <option value='option1'>Coding is Boring</option>
+          <option value='option2'>Coding is Hard</option>
+          <option value='Coding is Fun'>Coding is Fun</option>
+        </select>
+
+        {
+          formik.touched.option && formik.errors.option && (
+            <div className='error'>{formik.errors.option}</div>
+          )
+        }
+          
+
+
+      <button type='submit' className='btn'>
+        Submit
+      </button>
+
+    </form>
+  );
+};
+export default Home;
